@@ -44,7 +44,7 @@ var checkWindows = function(subject, url) {
 
           // "requiring" the prevent navigation module will install a
           // content policy that disallows changing the root HTML page.
-          //require("prevent-navigation");
+          require("prevent-navigation");
 
           if (wo.options.injectProps) {
               let sandbox = new Cu.Sandbox(
