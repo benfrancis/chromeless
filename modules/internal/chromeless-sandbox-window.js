@@ -44,7 +44,7 @@ var checkWindows = function(subject, url) {
 
           // "requiring" the prevent navigation module will install a
           // content policy that disallows changing the root HTML page.
-          require("prevent-navigation");
+          //require("prevent-navigation");
 
           if (wo.options.injectProps) {
               let sandbox = new Cu.Sandbox(
@@ -71,6 +71,17 @@ var checkWindows = function(subject, url) {
   }
 };
 
+var stripXframeOptions = function(subject, url) {
+  var httpChannel = subject.QueryInterface(Components.interfaces.nsIHttpChannel);
+  try {
+    var xframeoptions = httpChannel.getResponseHeader("X-Frame-Options");
+    httpChannel.setResponseHeader("X-Frame-Options", "", false);
+  }
+  catch(err) {	  
+  }
+}
+
+observers.add("http-on-examine-response", stripXframeOptions);
 observers.add("content-document-global-created", checkWindows);
 observers.add("chrome-document-global-created", checkWindows);
 
